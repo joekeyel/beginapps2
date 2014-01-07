@@ -47,7 +47,9 @@
 		<h1>Page Three</h1>
 	</div>
 	<div data-role="content">	
-		Content		
+		Content	
+		<span> Latitude : </span> <span id=lat></span> <br />
+                <span> Longitude : </span> <span id=lng></span> <br />
 	</div>
 	<div data-role="footer">
 		<h4>Page Footer</h4>
@@ -68,3 +70,22 @@
 
 </body>
 </html>
+ <script>
+
+
+navigator.geolocation.getCurrentPosition (function (pos)
+
+{
+
+  var lat = pos.coords.latitude;
+
+  var lng = pos.coords.longitude;
+
+  $("#lat").text (lat);
+
+  $("#lng").text (lng);
+
+});
+
+
+</script>
