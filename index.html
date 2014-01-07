@@ -6,9 +6,10 @@
 <link href="jquery-mobile/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
 <script src="jquery-mobile/jquery-1.6.4.min.js" type="text/javascript"></script>
 <script src="jquery-mobile/jquery.mobile-1.0.min.js" type="text/javascript"></script>
+<script src=http://maps.googleapis.com/maps/api/js?sensor=true></script>
 </head> 
 <body> 
-
+<div data-role=page id=home>
 <div data-role="page" id="page">
 	<div data-role="header">
 		<h1>Page One</h1>
@@ -46,10 +47,14 @@
 	<div data-role="header">
 		<h1>Page Three</h1>
 	</div>
-	<div data-role="content">	
+	<div data-role="content">
+	<div data-role=page id=win2 data-add-back-btn=true>
 		Content	
-		<span> Latitude : </span> <span id=lat></span> <br />
-                <span> Longitude : </span> <span id=lng></span> <br />
+		<span> Latitude : </span> <input type=text id=lat />
+
+    <span> Longitude : </span> <input type=text id=lng />
+
+    <a data-role=button id=btn>Display map</a>
 	</div>
 	<div data-role="footer">
 		<h4>Page Footer</h4>
@@ -70,7 +75,7 @@
 
 </body>
 </html>
- <script>
+  <script>
 
 
 navigator.geolocation.getCurrentPosition (function (pos)
@@ -81,9 +86,54 @@ navigator.geolocation.getCurrentPosition (function (pos)
 
   var lng = pos.coords.longitude;
 
-  $("#lat").text (lat);
+  $("#lat").val (lat);
 
-  $("#lng").text (lng);
+  $("#lng").val (lng);
+
+});
+
+
+$("#btn").bind ("click", function (event)
+
+{
+
+  var lat = $("#lat").val ();
+
+  var lng = $("#lng").val ();
+
+  var latlng = new google.maps.LatLng (lat, lng);
+
+  var options = { 
+
+    zoom : 15, 
+
+    center : latlng, 
+
+    mapTypeId : google.maps.MapTypeId.ROADMAP 
+
+  };
+
+  var $content = $("#win2 div:jqmData(role=content)");
+
+  $content.height (screen.height - 50);
+
+  var map = new google.maps.Map ($content[0], options);
+
+  $.mobile.changePage ($("#win2"));
+
+  
+
+  new google.maps.Marker ( 
+
+  { 
+
+    map : map, 
+
+    animation : google.maps.Animation.DROP,
+
+    position : latlng  
+
+  });  
 
 });
 
